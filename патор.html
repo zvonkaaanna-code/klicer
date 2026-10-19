@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>собачка</title>
+</head>
+<body>
+<style>body {
+    background-image:url(https://i.pinimg.com/originals/3e/da/af/3edaaff3c5259cb9539788779ff84f86.jpg);
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+    h1 {    
+    color: red;
+  }
+   h2 {    
+    color: red;
+  }
+  button {
+    color: red;
+  }
+  button:hover {
+    color: rgb(153, 0, 0);
+}
+a {
+    color: rgb(255, 0, 0);
+} 
+a:hover {
+    color: rgb(153, 0, 0);
+}
+</style>
+<center>
+<h1 id="текст-txt">кликер!</h1>
+<!-- Счётчик -->
+<h2>денег <span id="score">50</span></h2>
+
+    <!-- Кнопка -->
+    <button id="add-point-btn">+1 очко</button>
+    <button id="сбросить-butn">сбросить счёт</button>
+    <button id="тема-betn">cменить тему</button>  
+  </center>
+<br>
+  <center>
+    <button id="тема-кноп">обратно тему</button>
+  </center>
+  <script>const scoreSpan = document.getElementById('score');
+const btn = document.getElementById('add-point-btn');
+const resetBtn = document.getElementById('сбросить-butn');
+const текст = document.getElementById('текст-txt');
+const тема_смена = document.getElementById('тема-betn');
+const тема = document.getElementById('тема-кноп');
+
+// Звуки
+const clickSound = new Audio('clic.mp3');
+console.log("игра начался!")
+
+// === ЗАГРУЗКА СОХРАНЁННЫХ ДАННЫХ ПРИ СТАРТЕ ===
+let score = parseInt(localStorage.getItem('clickerScore')) || 0;
+scoreSpan.textContent = score;
+
+let savedColor = localStorage.getItem('clickerTextColor');
+if (savedColor) {
+  текст.style.color = savedColor;
+}
+
+// =============================================
+
+function increaseScore() {
+  score = score + 1;
+  scoreSpan.textContent = score;
+
+  // СОХРАНЕНИЕ счёта
+  localStorage.setItem('clickerScore', score);
+
+  clickSound.currentTime = 0;
+  clickSound.play();
+
+  if (score === 10) {
+    alert('Молодец!');
+  }
+
+  if (score === 50) {
+    alert('ого ну ты уже супер');
+    текст.style.color = 'blue';
+    // СОХРАНЕНИЕ цвета (синий после 50 очков)
+    localStorage.setItem('clickerTextColor', 'blue');
+  }
+}
+
+function vozrat() {
+  текст.style.color = 'red';
+  // СОХРАНЕНИЕ цвета (возврат на красный)
+  localStorage.setItem('clickerTextColor', 'red');
+  alert('это возращает красный цвет текста!');
+}
+
+function changeTheme() {
+  текст.style.color = 'gold';
+  // СОХРАНЕНИЕ цвета (золотой)
+  localStorage.setItem('clickerTextColor', 'gold');
+  alert('Ого, ты сделал функцию, которая не работает у других?!');
+}
+
+function resetScore() {
+  score = 0;
+  scoreSpan.textContent = score;
+  // СОХРАНЕНИЕ счёта (обнуление)
+  localStorage.setItem('clickerScore', score);
+  // СОХРАНЕНИЕ цвета (возврат к красному при сбросе)
+  текст.style.color = 'red';
+  localStorage.setItem('clickerTextColor', 'red');
+}
+
+btn.addEventListener('click', increaseScore);
+resetBtn.addEventListener('click', resetScore);
+тема_смена.addEventListener('click', changeTheme);
+тема.addEventListener('click', vozrat);
+
+// Запуск музыки при первом клике по странице
+document.addEventListener('click', function startMusic() {
+  bgMusic.play();
+  document.removeEventListener('click', startMusic);
+}, { once: true });
+</script>
+</body>
+</html>
